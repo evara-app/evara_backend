@@ -1,9 +1,10 @@
 from pathlib import Path
 from dotenv import dotenv_values
+import logging
 
 env_vars = dotenv_values()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = env_vars.get("secret_key")
 
@@ -21,6 +22,7 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = [
+    "apps.auths.apps.AuthsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,7 +44,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-REST_FRAMEWORK = {}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 ROOT_URLCONF = "config.urls"
 
@@ -63,17 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-DATABASES = {
-    "default": {
-        "ENGINE": env_vars.get("db_engine"),
-        "NAME": env_vars.get("db_name"),
-        "USER": env_vars.get("db_user"),
-        "PASSWORD": env_vars.get("db_password"),
-        "HOST": env_vars.get("db_host"),
-        "PORT": env_vars.get("db_port"),
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -107,3 +102,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "auths.User"
+
+# DATABASES
+from config.confd.db_ import *
+# EMAIL
+from config.confd.email_ import *
+# SMS
+from config.confd.sms_ import *
