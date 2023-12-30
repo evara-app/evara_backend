@@ -9,6 +9,6 @@ def max_workers():
 
 
 command = ""  # gunicorn binary package path
-pythonpath = BASE_DIR  # project path
-bind = "0.0.0.0:8000"
+pythonpath = str(BASE_DIR)   # project path
+bind = "0.0.0.0:8080"
 workers = max_workers()
