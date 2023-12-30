@@ -1,0 +1,15 @@
+version: "3.2"
+
+services:
+  evara:
+    build:
+      context: .
+      dockerfile: docker/dev.Dockerfile
+    env_file:
+      - .env
+    command: gunicorn -c gunicorn.conf.py config.wsgi
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    restart: on-failure
